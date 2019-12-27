@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500&display=swap&subset=cyrillic" rel="stylesheet">
+
+    <title>
+        <%=htmlWebpackPlugin.options.title%>
+    </title>
+</head>
+
+<body>
+<div class="app">
+
+</div>
+<script id="auth-template" type="text/x-handlebars-template">
+    <div class="auth">
+        <div class="auth__logo">
+            <img class="auth__img" src="./img/logo.png" alt="logo">
+        </div>
+        <div class="auth__title">Авторизация</div>
+        <div class="auth__desc">Введите пожалуйста своё фио и ник для дальнейшей авторизации</div>
+        <form class="auth__form form">
+            <input type="text" placeholder="Введите свое фио" name="name" class="form__input">
+            <input type="text" placeholder="Введите свой ник" name="login" class="form__input form__input_login">
+            <button type="submit" class="form__button">Войти</button>
+        </form>
+        <button class="auth__close"></button>
+    </div>
+</script>
+<script id="chat-template" type="text/x-handlebars-template">
+    <div class="chat">
+        <header class="chat__header header">
+            <button type="button" class="header__collapse"></button>
+            <button type="button" class="header__expand"></button>
+            <button type="button" class="header__close"></button>
+        </header>
+        <aside class="chat__sidebar sidebar">
+            <div class="sidebar__head">
+                <button class="sidebar__menu menu">
+                    <span class="menu__item"></span>
+                    <span class="menu__item"></span>
+                    <span class="menu__item"></span>
+                </button>
+                <input type="text" placeholder="Найти..." class="sidebar__search">
+            </div>
+            
+            <div class="sidebar__members members">
+                <ul class="members__list">
+                    {{#each users}}
+                        {{#if current}}
+                            <li class="members__item member member_current">
+                                <a href="" class="member__photo">
+                                    <img src="{{{photo}}}" alt="photo" class="member__img">
+                                </a>
+                                <div class="member__info">
+                                    <div class="member__name">{{name}}</div>
+                                    <div class="member__message">{{lastMessage messages}}</div>
+                                </div>
+                            </li>
+                        {{else}}
+                            <li class="members__item member">
+                                <div class="member__photo">
+                                    <img src="{{{photo}}}" alt="photo" class="member__img">
+                                </div>
+                                <div class="member__info">
+                                    <div class="member__name">{{name}}</div>
+                                    <div class="member__message">{{lastMessage messages}}</div>
+                                </div>
+                            </li>
+                        {{/if}}
+                    {{/each}}
+                </ul>
+            </div>
+        </aside>
+        <div class="chat__head head">
+            <div class="head__title">Чат</div>
+            <div class="head__desc">{{amountUsers users}}</div>
+        </div>
+        <main class="chat__main main">
+            <ul class="main__list">
+                {{#messages}}
+                    {{#if left}}
+                        <li class="main__item message message_left">
+                            <div class="message__photo">
+                                <img src="{{{photo}}}" alt="photo" class="message__img">
+                            </div>
+                            <div class="message__info">
+                                <div class="message__text">{{message}}</div>
+                                <div class="message__time">{{time}}</div>
+                            </div>
+                        </li>
+                    {{else}}
+                        <li class="main__item message message_right">
+                            <div class="message__photo">
+                                <img src="{{{photo}}}" alt="photo" class="message__img">
+                            </div>
+                            <div class="message__info">
+                                <div class="message__text">{{message}}</div>
+                                <div class="message__time">{{time}}</div>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/messages}}
+            </ul>
+        </main>
+        <form class="chat__form">
+            <input placeholder="Введите сообщение..." type="text" class="chat__input">
+            <button class="chat__button">Отправить</button>
+        </form>
+        <div class="overlay">
+            <div class="dragarea">
+                <div class="dragarea__photo"></div>
+                <div class="dragarea__desc">Область для профильной фотографии</div>
+                <form class="dragarea-form">
+                    <div class="dragarea-form__buttons">
+                        <button class="overlay__button overlay__button_close" type="button">Отмена</button>
+                        <button class="overlay__button" type="submit">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+<script src="/socket.io/socket.io.js"></script>
+</body>
+
+</html>
